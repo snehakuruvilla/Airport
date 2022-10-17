@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -33,6 +34,6 @@ public interface CountryRepository extends JpaRepository<Country, Long>, JpaSpec
 		      nativeQuery = true)
 		  List<ReportRowDto> queryTopAirports(int limit);
 
-	List<Country> findByNameOrCode(String name, String name2);
+	List<Country> findByNameOrCode(String name, String code, Pageable page);
 
 }

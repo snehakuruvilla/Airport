@@ -1,17 +1,11 @@
 package com.sk.airport.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sk.airport.dto.CountryDetailsDto;
@@ -29,49 +23,25 @@ public class AirportServiceImpl implements AirportService {
 
 	@Autowired
 	private CountryRepository countryRepo;
-	
+
 	private CountryMapper countryMapper;
-	
+
 	public AirportServiceImpl(CountryRepository countryRepo, CountryMapper countryMapper) {
 		this.countryRepo = countryRepo;
 		this.countryMapper = countryMapper;
 	}
-	
+
 	public static final int REPORT_TOP_BOTTOM_LIMIT = 10;
 
-	/*
-	 * @Override public CountryDetailsDto Sneha(RunwayRequestDto runwayRequestDto) {
-	 * log.debug("entering the service method getRunwayFromCountry");
-	 * Optional<Country> country =
-	 * countryRepo.findByNameOrCode(runwayRequestDto.getCountryName(),
-	 * runwayRequestDto.getCode()); return mapPage() }
-	 */
-	
 	@Override
 	public List<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto) {
 		log.debug("Starting adding new recipe : {}", runwayRequestDto);
-		List<Country> entity = countryRepo.findByNameOrCode(runwayRequestDto.getCountryName(),runwayRequestDto.getCode());
+		Pageable page = PageRequest.of(runwayRequestDto.getPageNum(), runwayRequestDto.getPageSize());
+		List<Country> entity = countryRepo.findByNameOrCode(runwayRequestDto.getCountryName(),
+				runwayRequestDto.getCode(), page);
 		return countryMapper.fromEntityListToDtoList(entity);
 	}
-	
-	/*
-	 * public Predicate prepareRunway(RunwayRequestDto runwayRequestDto,
-	 * Root<Country> root, CriteriaBuilder criteriaBuilder) { List<Predicate>
-	 * predicateList = new ArrayList<>();
-	 * 
-	 * if(runwayRequestDto.getCountryName() !=null &&
-	 * !runwayRequestDto.getCountryName().isBlank()) {
-	 * predicateList.add(criteriaBuilder.like(root.get("name"), "%" +
-	 * runwayRequestDto.getCountryName()+ "%")); }
-	 * 
-	 * if(runwayRequestDto.getCode() !=null &&
-	 * !runwayRequestDto.getCode().isBlank()) {
-	 * predicateList.add(criteriaBuilder.like(root.get("code"), "%" +
-	 * runwayRequestDto.getCode()+ "%")); }
-	 * 
-	 * return criteriaBuilder.and(predicateList.toArray(new
-	 * Predicate[predicateList.size()])); }
-	 */
+
 	@Override
 	public List<ReportRowDto> getTopoTenAirports() {
 		log.debug("entering the service method getTopoTenAirports");

@@ -39,7 +39,7 @@
 			<version>8.0.30</version>
 		</dependency>
 
- 	<dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -49,7 +49,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- swagger-ui for api documentation web ui -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -61,6 +61,7 @@
 			<artifactId>springdoc-openapi-data-rest</artifactId>
 			<version>1.6.9</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
