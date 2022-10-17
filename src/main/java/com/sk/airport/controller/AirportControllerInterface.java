@@ -28,7 +28,7 @@ public interface AirportControllerInterface {
 			@ApiResponse(description = "Success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))),
 			@ApiResponse(description = "Bad Request", responseCode = "400"),
 			@ApiResponse(description = "Internal error", responseCode = "500", content = @Content) })
-	public ResponseEntity<Page<CountryDetailsDto>> getRunwayFromCountry(@RequestParam(name="countryName") String countryName,
+	public ResponseEntity<List<CountryDetailsDto>> getRunwayFromCountry(@RequestParam(name="countryName") String countryName,
 			@RequestParam(name="code") String code,@RequestParam(name="pageNum") int pageNum,
 			@RequestParam(name="pageSize") int pageSize);
 	

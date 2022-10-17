@@ -48,28 +48,30 @@ public class AirportServiceImpl implements AirportService {
 	 */
 	
 	@Override
-	public Page<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto) {
+	public List<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto) {
 		log.debug("Starting adding new recipe : {}", runwayRequestDto);
-		return countryMapper.mapPage(countryRepo.findAll((Specification<Country>) (root, query, criteriaBuilder) ->
-		prepareRunway(runwayRequestDto, root, criteriaBuilder),
-        PageRequest.of(runwayRequestDto.getPageNum(),
-        		runwayRequestDto.getPageSize())));
+		List<Country> entity = countryRepo.findByNameOrCode(runwayRequestDto.getCountryName(),runwayRequestDto.getCode());
+		return countryMapper.fromEntityListToDtoList(entity);
 	}
 	
-	public Predicate prepareRunway(RunwayRequestDto runwayRequestDto, Root<Country> root, CriteriaBuilder criteriaBuilder) {
-		List<Predicate> predicateList = new ArrayList<>();
-		
-		if(runwayRequestDto.getCountryName() !=null && !runwayRequestDto.getCountryName().isBlank()) {
-			predicateList.add(criteriaBuilder.like(root.get("name"), "%" + runwayRequestDto.getCountryName()+ "%"));
-		}
-		
-		if(runwayRequestDto.getCode() !=null && !runwayRequestDto.getCode().isBlank()) {
-			predicateList.add(criteriaBuilder.like(root.get("code"), "%" + runwayRequestDto.getCode()+ "%"));
-		}
-
-        return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
-	}
-
+	/*
+	 * public Predicate prepareRunway(RunwayRequestDto runwayRequestDto,
+	 * Root<Country> root, CriteriaBuilder criteriaBuilder) { List<Predicate>
+	 * predicateList = new ArrayList<>();
+	 * 
+	 * if(runwayRequestDto.getCountryName() !=null &&
+	 * !runwayRequestDto.getCountryName().isBlank()) {
+	 * predicateList.add(criteriaBuilder.like(root.get("name"), "%" +
+	 * runwayRequestDto.getCountryName()+ "%")); }
+	 * 
+	 * if(runwayRequestDto.getCode() !=null &&
+	 * !runwayRequestDto.getCode().isBlank()) {
+	 * predicateList.add(criteriaBuilder.like(root.get("code"), "%" +
+	 * runwayRequestDto.getCode()+ "%")); }
+	 * 
+	 * return criteriaBuilder.and(predicateList.toArray(new
+	 * Predicate[predicateList.size()])); }
+	 */
 	@Override
 	public List<ReportRowDto> getTopoTenAirports() {
 		log.debug("entering the service method getTopoTenAirports");

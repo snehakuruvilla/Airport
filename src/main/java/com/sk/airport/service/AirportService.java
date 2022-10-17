@@ -10,7 +10,7 @@ import com.sk.airport.dto.RunwayRequestDto;
 
 public interface AirportService {
 
-	public Page<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto);
+	public List<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto);
 	
 	public SearchCountry searchCountryByName(String name);
 	

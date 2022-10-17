@@ -14,6 +14,10 @@ import com.sk.airport.exception.MapperNullObjectException;
 public class AirportMapper {
 	
 	private RunwayMapper runwayMapper;
+	
+	public AirportMapper(RunwayMapper runwayMapper) {
+		this.runwayMapper = runwayMapper;
+	}
 
 	public List<AirportDetailsDto> fromEntityListToDtoList(List<Airport> entityList) {
 		 if(entityList != null){

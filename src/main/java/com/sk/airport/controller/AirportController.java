@@ -35,7 +35,7 @@ public class AirportController implements AirportControllerInterface {
 	}
 
 	@GetMapping("/runways")
-	public ResponseEntity<Page<CountryDetailsDto>> getRunwayFromCountry(@RequestParam(name="countryName") String countryName,
+	public ResponseEntity<List<CountryDetailsDto>> getRunwayFromCountry(@RequestParam(name="countryName") String countryName,
 			@RequestParam(name="code") String code,@RequestParam(name="pageNum") int pageNum,
 			@RequestParam(name="pageSize") int pageSize) {
 		RunwayRequestDto runwayRequestDto = new RunwayRequestDto();
@@ -44,8 +44,8 @@ public class AirportController implements AirportControllerInterface {
 		runwayRequestDto.setPageNum(pageNum);
 		runwayRequestDto.setPageSize(pageSize);
 		log.info("Starting getRunwayFromCountry method {}", runwayRequestDto);
-		Page<CountryDetailsDto> dto = airportService.getRunwayFromCountry(runwayRequestDto);
-		return ResponseEntity.ok(dto);
+		List<CountryDetailsDto> dtoList = airportService.getRunwayFromCountry(runwayRequestDto);
+		return ResponseEntity.ok(dtoList);
 	}
 
 	@GetMapping("/topairports")
