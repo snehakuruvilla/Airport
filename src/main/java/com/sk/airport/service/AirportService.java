@@ -1,18 +1,21 @@
 package com.sk.airport.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.sk.airport.entity.Country;
+import org.springframework.data.domain.Page;
+
+import com.sk.airport.dto.CountryDetailsDto;
+import com.sk.airport.dto.ReportRowDto;
+import com.sk.airport.dto.RunwayRequestDto;
 
 public interface AirportService {
 
-	public Optional<Country> getRunwayFromCountry(String name);
+	public Page<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto);
 	
 	public SearchCountry searchCountryByName(String name);
 	
 	public SearchCountry searchCountryByCode(String code);
 	
-	public List<ReportRow> getTopoTenAirports();
-
-}
+	public List<ReportRowDto> getTopoTenAirports();
+	
+	}

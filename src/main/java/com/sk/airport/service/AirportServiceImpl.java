@@ -1,12 +1,24 @@
 package com.sk.airport.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.sk.airport.dto.CountryDetailsDto;
+import com.sk.airport.dto.ReportRowDto;
+import com.sk.airport.dto.RunwayRequestDto;
 import com.sk.airport.entity.Country;
+import com.sk.airport.mapper.CountryMapper;
 import com.sk.airport.repository.CountryRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,19 +27,51 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AirportServiceImpl implements AirportService {
 
-	public static final int REPORT_TOP_BOTTOM_LIMIT = 10;
-
 	@Autowired
 	private CountryRepository countryRepo;
+	
+	private CountryMapper countryMapper;
+	
+	public AirportServiceImpl(CountryRepository countryRepo, CountryMapper countryMapper) {
+		this.countryRepo = countryRepo;
+		this.countryMapper = countryMapper;
+	}
+	
+	public static final int REPORT_TOP_BOTTOM_LIMIT = 10;
 
+	/*
+	 * @Override public CountryDetailsDto Sneha(RunwayRequestDto runwayRequestDto) {
+	 * log.debug("entering the service method getRunwayFromCountry");
+	 * Optional<Country> country =
+	 * countryRepo.findByNameOrCode(runwayRequestDto.getCountryName(),
+	 * runwayRequestDto.getCode()); return mapPage() }
+	 */
+	
 	@Override
-	public Optional<Country> getRunwayFromCountry(String name) {
-		log.debug("entering the service method getRunwayFromCountry");
-		return countryRepo.findByNameOrCode(name, name);
+	public Page<CountryDetailsDto> getRunwayFromCountry(RunwayRequestDto runwayRequestDto) {
+		log.debug("Starting adding new recipe : {}", runwayRequestDto);
+		return countryMapper.mapPage(countryRepo.findAll((Specification<Country>) (root, query, criteriaBuilder) ->
+		prepareRunway(runwayRequestDto, root, criteriaBuilder),
+        PageRequest.of(runwayRequestDto.getPageNum(),
+        		runwayRequestDto.getPageSize())));
+	}
+	
+	public Predicate prepareRunway(RunwayRequestDto runwayRequestDto, Root<Country> root, CriteriaBuilder criteriaBuilder) {
+		List<Predicate> predicateList = new ArrayList<>();
+		
+		if(runwayRequestDto.getCountryName() !=null && !runwayRequestDto.getCountryName().isBlank()) {
+			predicateList.add(criteriaBuilder.like(root.get("name"), "%" + runwayRequestDto.getCountryName()+ "%"));
+		}
+		
+		if(runwayRequestDto.getCode() !=null && !runwayRequestDto.getCode().isBlank()) {
+			predicateList.add(criteriaBuilder.like(root.get("code"), "%" + runwayRequestDto.getCode()+ "%"));
+		}
+
+        return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
 	}
 
 	@Override
-	public List<com.sk.airport.service.ReportRow> getTopoTenAirports() {
+	public List<ReportRowDto> getTopoTenAirports() {
 		log.debug("entering the service method getTopoTenAirports");
 		return countryRepo.queryTopAirports(REPORT_TOP_BOTTOM_LIMIT);
 	}

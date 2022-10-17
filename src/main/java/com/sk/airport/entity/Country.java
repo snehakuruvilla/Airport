@@ -2,9 +2,14 @@ package com.sk.airport.entity;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.NaturalId;
+import com.sk.airport.dto.CountryDetailsDto;
 
 import lombok.Data;
 
