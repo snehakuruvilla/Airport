@@ -2,7 +2,6 @@ package com.sk.airport.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Page;
@@ -25,12 +24,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 public interface AirportControllerInterface {
 
 	@Operation(summary = "Runways from countrys", description = "Get all runways coresponding to countries", tags = { "Runways" }, responses = {
-			@ApiResponse(description = "Success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Page.class))),
+			@ApiResponse(description = "Success", responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = CountryDetailsDto.class))),
 			@ApiResponse(description = "Bad Request", responseCode = "400"),
 			@ApiResponse(description = "Internal error", responseCode = "500", content = @Content) })
-	public ResponseEntity<List<CountryDetailsDto>> getRunwayFromCountry(@RequestParam(name="countryName") String countryName,
-			@RequestParam(name="code") String code,@RequestParam(name="pageNum") int pageNum,
-			@RequestParam(name="pageSize") int pageSize);
+	public ResponseEntity<List<CountryDetailsDto>> getRunwayFromCountry(@RequestBody @Validated @NotNull RunwayRequestDto runwayRequestDto);
 	
 	
 	@Operation(summary = "Top Airports", description = "Get Top Ten Countries with highest Airports", tags = { "Country" }, responses = {

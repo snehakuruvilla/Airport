@@ -1,0 +1,106 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Airport",
+		"_postman_id": "90e49600-ae67-449f-d7bd-7755876f5468",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/airport/countrycode?code=P",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/api/airport/countrycode?code=P",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"airport",
+						"countrycode"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "P",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/airport/countryname?name=Gua",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/api/airport/countryname?name=Gua",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"airport",
+						"countryname"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Gua",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/airport/topairports",
+			"request": {
+				"url": "http://localhost:8080/api/airport/topairports",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/airport/runways",
+			"request": {
+				"url": "http://localhost:8080/api/airport/runways",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"countryName\": \"Puerto Rico\",\r\n  \"code\": \"PR\",\r\n  \"pageNum\": 0,\r\n  \"pageSize\": 10\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
